@@ -7,18 +7,38 @@ font-family: 'Roboto Mono', monospace; */
 @tailwind components;
 @tailwind utilities;
 
+:root {
+    --text-color: rgb(210, 210, 210);
+    --background-color: black;
+    --primary: rebeccapurple;
+    --secondary: cornflowerblue;
+}
+
 html {
     scroll-behavior: smooth;
 }
 
 * {
     box-sizing: border-box;
+    scrollbar-width: 20px;
+    scrollbar-color: var(--secondary) var(--primary);
 }
 
-:root {
-    --text-color: #040714;
-    --background-color: rgb(250, 250, 250);
+*::-webkit-scrollbar {
+    width: 12px;
 }
+
+*::-webkit-scrollbar-track {
+    background: var(--primary);
+    border-radius: 5px;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: var(--secondary);
+    border-radius: 14px;
+    border: 3px solid var(--primary);
+}
+
 
 body {
     background-color: var(--background-color);
@@ -28,22 +48,4 @@ body {
 
     margin: 0;
     padding: 0;
-}
-
-@media only screen and (min-width: 768px) {
-    body {
-        font-size: 16px;
-    }
-}
-
-@media only screen and (min-width:480px) and (max-width: 768px) {
-    body {
-        font-size: 15px;
-    }
-}
-
-@media only screen and (max-width: 479px) {
-    body {
-        font-size: 14px;
-    }
 }

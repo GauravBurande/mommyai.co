@@ -1,10 +1,10 @@
 import { Configuration, OpenAIApi } from "openai";
 
 const config = new Configuration({
-    apiKey: localStorage.getItem('apiKey'),
+    apiKey: "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",
 });
 
-const gpt3 = new OpenAIApi(config);
+const openai = new OpenAIApi(config);
 
 export default async function handler(
     req,
@@ -15,17 +15,19 @@ export default async function handler(
     if (!prompt) {
         return res
             .status(405)
-            .json({ error: true, message: "No input prompt found" });
+            .json({ error: true, message: "No input prompt found!" });
     }
-
-    res.status(200).json({ apiKey, prompt: prompt });
     try {
-        const response = await gpt3.createCompletion({
-            model: "gpt-3.5-turbo",
+        const response = await openai.createCompletion({
+            model: "text-davinci-003",
             prompt: prompt,
-            temperature: 0.8,
-            max_tokens: 4000,
+            temperature: 0.7,
+            max_tokens: 200,
+            top_p: 1,
+            frequency_penalty: 0,
+            presence_penalty: 0,
         });
+
         const text = response.data.choices[0].text?.trim() || "Sorry, there was a problem!";
 
         res.status(200).json({ success: true, text: text });
