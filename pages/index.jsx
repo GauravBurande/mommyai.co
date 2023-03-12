@@ -17,7 +17,7 @@ const Home = () => {
         <Hero />
         <Story />
         <Generate />
-        {/* <FAQ /> */}
+        <Testimonials />
         <Footer />
       </div>
     </div>
@@ -66,15 +66,17 @@ function Story() {
         </div>
 
         <div>
-          <h2 className="text-2xl py-3 md:px-8 font-semibold">Princess Petunia and the Battle Against the Bewitched Beast</h2>
+          <h2 className="text-2xl py-3 md:px-8 font-semibold text-blue-500">Princess Petunia and the Battle Against the Bewitched Beast</h2>
 
-          <div className="space-y-2 max-h-[250px] md:px-8 overflow-y-scroll">
+          <div className="bg-gradient-to-b mr-3 from-black to-transparent translate-y-7 h-8"></div>
+          <div className="max-h-[250px] md:px-8 overflow-y-scroll">
             {exampleStory.map((para, i) => {
               return (
-                <p key={i}>{para}</p>
+                <p className="py-4" key={i}>{para}</p>
               )
             })}
           </div>
+          <div className="w-11/12 bg-gradient-to-t from-black to-transparent -translate-y-8 h-8"></div>
         </div>
       </div>
 
@@ -144,7 +146,7 @@ function Generate() {
           <form method="post" onSubmit={handleSubmit}>
             <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
             <div className="relative mx-auto lg:w-2/3">
-              <input onChange={handleChange} value={userPrompt} type="text" id="default-search" className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="enter the story details you want to generate..." required />
+              <input autoComplete="off" onChange={handleChange} value={userPrompt} type="text" id="default-search" className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="a kid who became storyteller..." required />
               <button disabled={loading} type="submit" className={`text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 ${loading && "animate-pulse"}`}>{loading ? "Generating" : "Generate"}</button>
             </div>
           </form>
@@ -186,91 +188,85 @@ function Generate() {
   )
 }
 
-// function FAQ() {
+function Testimonials() {
 
-//   const accordionHeader = document.querySelectorAll(".accordion-header");
-//   accordionHeader.forEach((header) => {
-//     header.addEventListener("click", function () {
-//       const accordionContent = header.parentElement.querySelector(".accordion-content");
-//       let accordionMaxHeight = accordionContent.style.maxHeight;
+  const testmols = [
+    {
+      "author": "Gracy Dhok",
+      "quote": "using mommyai was so easy for me it's good enough for my kids to play with. This is something which I really want to be able to provide to people."
+    },
+    {
+      "author": "Gracy Dhok",
+      "quote": "using mommyai was so easy for me it's good enough for my kids to play with."
+    },
+    {
+      "author": "Gracy Dhok",
+      "quote": "using mommyai was so easy for me it's good enough for my kids to play with. This is something which I really want to be able to provide to people. I really enjoy it to tell it to my children."
+    },
+    {
+      "author": "Gracy Dhok",
+      "quote": "using mommyai was so easy for me it's good enough for my kids to play with. This is something which I really want to be able to provide to people."
+    },
+    {
+      "author": "Gracy Dhok",
+      "quote": "using mommyai was so easy for me it's good enough for my kids to play with. This is something which I really want to be able to provide to people."
+    },
+    {
+      "author": "Gracy Dhok",
+      "quote": "using mommyai was so easy for me it's good enough for my kids to play with. This is something which I really want to be able to provide to people."
+    },
+    {
+      "author": "Gracy Dhok",
+      "quote": "using mommyai was so easy for me it's good enough for my kids to play with. This is something which I reallY WANT."
+    },
+    {
+      "author": "Gracy Dhok",
+      "quote": "using mommyai was so easy for me it's good enough for my kids to play with."
+    },
+    {
+      "author": "Gracy Dhok",
+      "quote": "using mommyai was so easy for me it's good enough for my kids to play with."
+    },
+    {
+      "author": "Gracy Dhok",
+      "quote": "using mommyai was so easy for me it's good enough for my kids to play with."
+    },
+    {
+      "author": "Gracy Dhok",
+      "quote": "using mommyai was so easy for me it's good enough for my kids to play with."
+    },
+    {
+      "author": "Gracy Dhok",
+      "quote": "using mommyai was so easy for me it's good enough for my kids to play with."
+    },
+    {
+      "author": "Gracy Dhok",
+      "quote": "using mommyai was so easy for me it's good enough for my kids to play with."
+    },
+    {
+      "author": "Gracy Dhok",
+      "quote": "using mommyai was so easy for me it's good enough for my kids to play with."
+    },
+  ]
+  return (
+    <>
+      <div>
+        <h2 className="py-10 text-3xl font-semibold text-blue-500">What other parents say</h2>
+        <div className="flex overflow-x-scroll md:mx-20 space-x-4 flex-nowrap">
+          {testmols.map((testmol, i) => {
+            return (
+              <div className="px-8 py-6 flex flex-col justify-between space-y-3 bg-green-100 rounded-xl text-gray-800" key={i}>
+                <p className="min-w-[14rem]">{testmol.quote}</p>
+                <h6 className="text-md font-semibold">{testmol.author}</h6>
+              </div>
+            )
+          })}
+        </div>
 
-//       if (accordionMaxHeight == "0px" || accordionMaxHeight.length == 0) {
-//         accordionContent.style.maxHeight = `${accordionContent.scrollHeight + 32}px`;
-//         header.querySelector(".fas").classList.remove("fa-plus");
-//         header.querySelector(".fas").classList.add("fa-minus");
-//       } else {
-//         accordionContent.style.maxHeight = `0px`;
-//         header.querySelector(".fas").classList.add("fa-plus");
-//         header.querySelector(".fas").classList.remove("fa-minus");
-//       }
-//     });
-//   });
-
-//   const faqs = [
-//     {
-//       "title": "how to get coins to play with this tool?",
-//       "description": "first you need to buy coins, then you'll get a key to your email address, click on fill key and paste the key there."
-//     },
-//     {
-//       "title": "how to get coins to play with this tool?",
-//       "description": "first you need to buy coins, then you'll get a key to your email address, click on fill key and paste the key there."
-//     },
-//     {
-//       "title": "how to get coins to play with this tool?",
-//       "description": "first you need to buy coins, then you'll get a key to your email address, click on fill key and paste the key there."
-//     }
-//   ]
-
-
-//   return (
-//     <>
-//       <style>
-//         {
-//           `.accordion-content {
-//             transition: max-height 0.3s ease-out, padding 0.3s ease;
-//           }`
-//         }
-//       </style>
-//       <div>
-//         <div className="grid py-10 place-items-center">
-//           <div className="max-w-full mx-2 sm:mx-8">
-//             <div className="p-5 sm:p-10 shadow-sm rounded-xl">
-//               <div className="">
-//                 <h1 className="font-extrabold text-gray-200 text-2xl ml-5">FAQ's</h1>
-//                 <div className="h-1 bg-blue-500 rounded-full w-1/6">
-//                 </div>
-//               </div>
-//               <div className="mt-14 ml-4 sm:ml-24">
-//                 {faqs.map((faq, index) => {
-//                   return (
-//                     <div key={index} className="transition">
-//                       <div className="accordion-header cursor-pointer transition flex space-x-5 px-5 items-center h-16">
-//                         <i className="fas fa-plus text-purple-700"></i>
-//                         <h2 className="text-gray-700 font-semibold">{faq.title}</h2>
-//                       </div>
-//                       <div className="accordion-content px-5 pt-0 overflow-hidden max-h-0 space-y-4 mr-4 text-sm">
-//                         <div className="flex flex-row ml-8 py-4">
-//                           <div className="flex w-1 bg-gradient-to-t from-red-500 to-red-400"></div>
-//                           <div className="flex-1 p-3">
-//                             <p className="pl-2 sm:pl-4 text-justify">
-//                               {faq.description}
-//                             </p>
-//                           </div>
-//                         </div>
-//                       </div>
-//                     </div>
-//                   )
-//                 })}
-
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-
-//       <div className="my-8 xl:my-11 lg:my-11 w-5/6 h-[2px] bg-gradient-to-l from-[#000000] to-[#dbdbde]"></div>
-//     </>
-//   )
-// }
+        <div className="my-8 xl:my-11 lg:my-11 w-5/6 h-[2px] bg-gradient-to-l from-[#000000] to-[#dbdbde]"></div>
+      </div>
+    </>
+  )
+}
 
 export default Home

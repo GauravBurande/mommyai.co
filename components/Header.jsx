@@ -24,7 +24,7 @@ const Header = () => {
                     </div>
                     <div className='relative'>
                         <button className='bg-gray-200 text-sm text-black flex items-center justify-center hover:text-white hover:bg-gradient-to-tr from-fuchsia-500 to-cyan-500 space-x-2 shadow-2xl transition-all px-2 py-1 md:text-lg rounded-md'>
-                            <p>fill <span className='hidden sm:inline'>code</span></p>
+                            <p>fill <span className='hidden sm:inline'>key</span></p>
                             <GiBrokenPottery />
                         </button>
                         <div className='absolute whitespace-nowrap -translate-x-3 sm:translate-x-0 text-white'>{coins} coins left!</div>
