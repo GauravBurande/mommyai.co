@@ -26,6 +26,7 @@ html {
 
 *::-webkit-scrollbar {
     width: 12px;
+    height: 0;
 }
 
 *::-webkit-scrollbar-track {
