@@ -1,26 +1,102 @@
-import Header from "../components/Header"
 import Footer from "../components/Footer"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Head from "next/head"
+import Link from 'next/link'
+import { RiLightbulbFlashFill } from "react-icons/ri"
 
 const Home = () => {
-  return (
-    <div className="relative flex min-h-screen flex-col overflow-hidden">
 
+  const [display, setDisplay] = useState(false)
+  const [localKey, setLocalKey] = useState()
+
+  useEffect(() => {
+    const key = typeof window !== "undefined" && window.localStorage.getItem("key")
+
+    if (key) {
+      setLocalKey(key)
+    } else {
+      console.log("no key found")
+    }
+  })
+
+  const toggleDisplay = () => {
+    setDisplay(!display)
+  }
+
+  return (
+    <>
       <Head>
         <title>mommyAI | stories for kids</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className='container px-10 md:px-16'>
-        <Header />
-        <Hero />
-        <Story />
-        <Generate />
-        <Testimonials />
-        <Footer />
+      <div className="relative flex min-h-screen flex-col overflow-hidden">
+        {display && <Key toggleDisplay={toggleDisplay} />}
+
+        <div className='container px-10 md:px-16'>
+          <Header toggleDisplay={toggleDisplay} />
+          <Hero />
+          <Story />
+          <Generate localKey={localKey} />
+          <Testimonials />
+          <Footer />
+        </div>
+      </div>
+    </>
+  )
+}
+
+function Header({ toggleDisplay }) {
+  return (
+    <div>
+      <div className='flex items-center pt-8 sm:pt-14 xl:pt-16 pb-14 justify-between'>
+        <div className='w-[200px] mr-5'>
+          <Link href={'/'}>
+            <h2 className='text-3xl md:text-4xl font-semibold'>mommy<span className='text-gray-500'>AI</span>.co</h2>
+          </Link>
+        </div>
+
+        <div className='flex flex-col md:flex-row items-center justify-center space-x-3 space-y-3 md:space-y-0'>
+          <div>
+            <button className='bg-gray-500 text-sm hover:text-gray-900 flex items-center justify-center text-white hover:bg-gradient-to-tr from-teal-400 to-yellow-200 space-x-2 shadow-2xl transition-all px-2 md:px-4 py-1 md:py-2 md:text-[1rem] rounded-md'>
+              <a target={"_blank"} href="https://mommyai.lemonsqueezy.com/checkout/buy/fa520aba-d5d6-4496-a12b-8690529172e3">Pricing</a>
+            </button>
+          </div>
+          <div>
+            <button onClick={toggleDisplay} className='bg-gray-200 text-sm text-black flex items-center justify-center hover:text-white hover:bg-gradient-to-tr from-fuchsia-500 to-cyan-500 space-x-2 shadow-2xl transition-all px-2 md:px-4 py-1 md:py-2 md:text-[1rem] rounded-md'>
+              <p>Your key</p>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
+  )
+}
+
+function Key({ toggleDisplay, localKey }) {
+
+  const [key, setKey] = useState("")
+
+  const handleChange = (e) => {
+    setKey(e.target.value)
+  }
+
+  const handleActivate = () => {
+    localStorage.setItem("key", key)
+  }
+
+  return (
+    <>
+      <div className="fixed z-10 min-h-screen min-w-full text-gray-700 flex flex-col space-y-8 items-center justify-center bg-gray-200">
+        <h3 className="">Paste your license key</h3>
+        <div className="relative w-2/3">
+          <input autoComplete="off" onChange={handleChange} value={key} type="text" id="key" className="w-full text-center block p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="K534N-KL45-N45B45J-45JB54K3" required />
+
+          {!localKey && <button onClick={handleActivate} type="submit" className={`text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800`}>Activate</button>}
+        </div>
+        <button onClick={toggleDisplay} className="px-4 py-2 bg-blue-200 rounded-full hover:bg-blue-300">Close</button>
+      </div>
+    </>
   )
 }
 
@@ -66,9 +142,9 @@ function Story() {
         </div>
 
         <div>
-          <h2 className="text-2xl py-3 md:px-8 font-semibold text-blue-500">Princess Petunia and the Battle Against the Bewitched Beast</h2>
+          <h2 className="text-2xl py-3 md:px-8 font-semibold text-blue-300">Princess Petunia and the Battle Against the Bewitched Beast</h2>
 
-          <div className="bg-gradient-to-b mr-3 from-black to-transparent translate-y-7 h-8"></div>
+          <div className="bg-gradient-to-b from-black to-transparent mr-3 translate-y-11 h-12"></div>
           <div className="max-h-[250px] md:px-8 overflow-y-scroll">
             {exampleStory.map((para, i) => {
               return (
@@ -76,7 +152,7 @@ function Story() {
               )
             })}
           </div>
-          <div className="w-11/12 bg-gradient-to-t from-black to-transparent -translate-y-8 h-8"></div>
+          <div className="bg-gradient-to-t from-black to-transparent mr-3 -translate-y-11 h-12"></div>
         </div>
       </div>
 
@@ -85,15 +161,15 @@ function Story() {
   )
 }
 
-function Generate() {
+function Generate({ localKey }) {
 
-  const [userPrompt, setPrompt] = useState("")
+  const [userPrompt, setUserPrompt] = useState("")
   const [loading, setLoading] = useState(false)
   const [story, setStory] = useState()
   const [title, setTitle] = useState()
 
   const handleChange = (e) => {
-    setPrompt(e.target.value)
+    setUserPrompt(e.target.value)
   }
 
   const handleSubmit = async (e) => {
@@ -139,16 +215,52 @@ function Generate() {
     }
   }
 
+  const suggestions = [
+    "the girl who climbed the mount everest!",
+    "the pirates who found the treasure and the King of an Island.",
+    "Fluffy the rabbit and the Tom cat",
+    "Lisa, stuck in jungle with a fairy!",
+    "Eddie the Inventor, who invented universal travel and Peter",
+    "Tommy, the dog in the magical forest with a elephant",
+    "The cursed princess who defeated the witch",
+    "A panda who became a magician",
+    "A princess who travelled across the whole africa and found diamonds",
+    "Dragon Prince and the wizard",
+    "The magical mirror, the door to the other world",
+    "The little hamster who became mayor of the town.",
+    "The magic house where time moves differently",
+    "adventures of the queen in the ice world",
+    "The magical book and amora",
+    "The little girl who defeated wizard cat",
+    "The cow who travelled in the space"
+  ]
+
+  const suggest = () => {
+    const randomSuggest = Math.floor(suggestions.length * (Math.random()))
+
+    setUserPrompt(suggestions[randomSuggest])
+  }
+
   return (
     <div id='generate'>
       <div className="flex flex-col space-y-8">
         <div>
+          <div>
+            <h3 className="text-xl text-center">Enter anything that comes in your mind: genre, plot, incident, character, </h3>
+            <span className="flex items-center justify-center pb-8">
+              <p>or try some suggestions:</p>
+              <button onClick={suggest} disabled={loading} className="text-3xl text-blue-200 hover:text-purple-300 font-medium p-2">
+                <RiLightbulbFlashFill />
+              </button>
+            </span>
+
+          </div>
+
           <form method="post" onSubmit={handleSubmit}>
             <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
             <div className="relative mx-auto lg:w-2/3">
-              <input onChange={handleChange} value={userPrompt} type="text" id="default-search" className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="enter the story details you want to generate..." required />
-              <button disabled={loading} type="submit" className={`text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 ${loading && "animate-pulse"}`}>{loading ? "Generating" : "Generate"}</button>
-              <button disabled={loading} className="absolute right-24 bottom-2  hover:text-blue-500 font-medium mr-4 p-2">id</button>
+              <input autoComplete="off" onChange={handleChange} value={userPrompt} type="text" id="default-search" className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="a kid who became storyteller..." required />
+              <button disabled={loading || !localKey} type="submit" className={`text-white disabled:bg-purple-500 absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 ${loading && "animate-pulse"}`}>{loading ? "Generating" : "Generate"}</button>
             </div>
           </form>
         </div>
@@ -189,91 +301,60 @@ function Generate() {
   )
 }
 
-// function FAQ() {
+function Testimonials() {
 
-//   const accordionHeader = document.querySelectorAll(".accordion-header");
-//   accordionHeader.forEach((header) => {
-//     header.addEventListener("click", function () {
-//       const accordionContent = header.parentElement.querySelector(".accordion-content");
-//       let accordionMaxHeight = accordionContent.style.maxHeight;
+  const testimonials = [
+    {
+      "author": "Gracy Dhok",
+      "quote": "I am amazed by the stories this generates, I wasn't expecting anything like that."
+    },
+    {
+      "author": "Mary Smith",
+      "quote": "I had a good experience using this. My kid was so addicted to youtube and all. This keeps keeps him reading and thinking and away from social media."
+    },
+    {
+      "author": "Jacob wilson",
+      "quote": "I didn't know what should I tell to create the story, the suggestion feature was really helpful for that."
+    },
+    {
+      "author": "Isla Walsh",
+      "quote": "I was hesitant to use this, as it could create inappropriate content, we cannot trust kids with it, but this does a good job. it refused to generate that story and instead told me another good story."
+    },
+    {
+      "author": "William O'Neill",
+      "quote": "It took about 10 secods to create the story, I don't know it's fast or slow, but i liked that it generated a long enough story, I think the time taken is fine for this."
+    },
+    {
+      "author": "Amelia Jones",
+      "quote": "Jimmy was so fascinated by this! He was so engaged with it! I would have recommend this to my friends."
+    },
+    {
+      "author": "Jack Brown",
+      "quote": "Does a good job at not generating any explicit or inappropriate content."
+    },
+  ]
 
-//       if (accordionMaxHeight == "0px" || accordionMaxHeight.length == 0) {
-//         accordionContent.style.maxHeight = `${accordionContent.scrollHeight + 32}px`;
-//         header.querySelector(".fas").classList.remove("fa-plus");
-//         header.querySelector(".fas").classList.add("fa-minus");
-//       } else {
-//         accordionContent.style.maxHeight = `0px`;
-//         header.querySelector(".fas").classList.add("fa-plus");
-//         header.querySelector(".fas").classList.remove("fa-minus");
-//       }
-//     });
-//   });
+  return (
+    <>
+      <div>
+        <h3 className="text-3xl font-semibold py-8">What other parents are saying</h3>
+        <div className="flex flex-nowrap space-x-4 md:mx-24 overflow-x-scroll">
+          {testimonials.map((testimonial, i) => {
+            return (
+              <div key={i} className="flex min-w-[20rem] bg-green-100 rounded-lg text-black px-7 py-4 flex-col justify-between">
+                <p>"{testimonial.quote}"</p>
+                <h6 className="text-lg font-semibold">{testimonial.author}</h6>
+              </div>
+            )
+          })}
+        </div>
 
-//   const faqs = [
-//     {
-//       "title": "how to get coins to play with this tool?",
-//       "description": "first you need to buy coins, then you'll get a key to your email address, click on fill key and paste the key there."
-//     },
-//     {
-//       "title": "how to get coins to play with this tool?",
-//       "description": "first you need to buy coins, then you'll get a key to your email address, click on fill key and paste the key there."
-//     },
-//     {
-//       "title": "how to get coins to play with this tool?",
-//       "description": "first you need to buy coins, then you'll get a key to your email address, click on fill key and paste the key there."
-//     }
-//   ]
+        <p className="py-8 font-semibold text-lg">Send me an <a className="uppercase text-blue-500 hover:text-purple-500 cursor-pointer underline hover:underline-offset-4 transition-all duration-500" href="mailto:swagstoar@gmail.com">email</a> for queries and feedback.</p>
 
-
-//   return (
-//     <>
-//       <style>
-//         {
-//           `.accordion-content {
-//             transition: max-height 0.3s ease-out, padding 0.3s ease;
-//           }`
-//         }
-//       </style>
-//       <div>
-//         <div className="grid py-10 place-items-center">
-//           <div className="max-w-full mx-2 sm:mx-8">
-//             <div className="p-5 sm:p-10 shadow-sm rounded-xl">
-//               <div className="">
-//                 <h1 className="font-extrabold text-gray-200 text-2xl ml-5">FAQ's</h1>
-//                 <div className="h-1 bg-blue-500 rounded-full w-1/6">
-//                 </div>
-//               </div>
-//               <div className="mt-14 ml-4 sm:ml-24">
-//                 {faqs.map((faq, index) => {
-//                   return (
-//                     <div key={index} className="transition">
-//                       <div className="accordion-header cursor-pointer transition flex space-x-5 px-5 items-center h-16">
-//                         <i className="fas fa-plus text-purple-700"></i>
-//                         <h2 className="text-gray-700 font-semibold">{faq.title}</h2>
-//                       </div>
-//                       <div className="accordion-content px-5 pt-0 overflow-hidden max-h-0 space-y-4 mr-4 text-sm">
-//                         <div className="flex flex-row ml-8 py-4">
-//                           <div className="flex w-1 bg-gradient-to-t from-red-500 to-red-400"></div>
-//                           <div className="flex-1 p-3">
-//                             <p className="pl-2 sm:pl-4 text-justify">
-//                               {faq.description}
-//                             </p>
-//                           </div>
-//                         </div>
-//                       </div>
-//                     </div>
-//                   )
-//                 })}
-
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-
-//       <div className="my-8 xl:my-11 lg:my-11 w-5/6 h-[2px] bg-gradient-to-l from-[#000000] to-[#dbdbde]"></div>
-//     </>
-//   )
-// }
+        <div className="my-8 xl:my-11 lg:my-11 w-5/6 h-[2px] bg-gradient-to-l from-[#000000] to-[#dbdbde]"></div>
+      </div>
+    </>
+  )
+}
 
 export default Home
