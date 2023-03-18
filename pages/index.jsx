@@ -438,7 +438,7 @@ function Generate({ localKey, setCoins, coins }) {
             </div>
             :
             <div className=" w-10/12 md:w-8/12 mx-auto">
-              <button onClick={speak} className="text-purple-300 hover:text-green-300 flex items-center gap-2 pb-4 pt-2"><BsSoundwave /> read the story loud</button>
+              {story && <button onClick={speak} className="text-purple-300 hover:text-green-300 flex items-center gap-2 pb-4 pt-2"><BsSoundwave /> read the story loud</button>}
               {<div>
                 <h3 className="py-8 text-3xl font-semibold">{title}</h3>
                 {story && story.map((para, index) => {
