@@ -3,19 +3,93 @@ import { useEffect, useState } from "react"
 import Head from "next/head"
 import Link from 'next/link'
 import { RiLightbulbFlashFill } from "react-icons/ri"
+import { BsSend, BsSoundwave } from "react-icons/bs"
+import { Toaster, toast } from 'sonner'
+import { useRouter } from "next/router"
 
 const Home = () => {
 
   const [display, setDisplay] = useState(false)
   const [localKey, setLocalKey] = useState()
+  const [coins, setCoins] = useState(0)
+
+  const router = useRouter()
 
   useEffect(() => {
     const key = typeof window !== "undefined" && window.localStorage.getItem("key")
+    const coins = typeof window !== "undefined" && window.localStorage.getItem("coins")
+    const instance_id = typeof window !== "undefined" && window.localStorage.getItem("instance_id")
 
     if (key) {
       setLocalKey(key)
-    } else {
-      console.log("no key found")
+      setCoins(parseInt(coins))
+
+      const validateKey = async () => {
+        try {
+          const myHeaders = new Headers();
+          myHeaders.append("Accept", "application/json");
+          myHeaders.append("Accept", "application/x-www-form-urlencoded");
+
+          const raw = new URLSearchParams({
+            'license_key': key,
+          })
+
+          const requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow",
+          };
+
+          const response = await fetch(`https://api.lemonsqueezy.com/v1/licenses/validate`, requestOptions);
+          const result = await response.json();
+
+          if (!result.valid) {
+            toast.error("Your subscription has ended!")
+            localStorage.clear()
+
+            const deactivateKey = async () => {
+              try {
+                const myHeaders = new Headers();
+                myHeaders.append("Accept", "application/json");
+                myHeaders.append("Accept", "application/x-www-form-urlencoded");
+
+                const raw = new URLSearchParams({
+                  'license_key': key,
+                  'instance_id': instance_id
+                })
+
+                const requestOptions = {
+                  method: "POST",
+                  headers: myHeaders,
+                  body: raw,
+                  redirect: "follow",
+                };
+
+                const response = await fetch(`https://api.lemonsqueezy.com/v1/licenses/deactivate`, requestOptions);
+                const result = await response.json();
+
+                if (result.deactivated) {
+                  toast.error("The license key has been deactivated!")
+                  setTimeout(() => {
+                    router.reload(window.location.pathname)
+                  }, 2000);
+                }
+              } catch (error) {
+                toast.error(error)
+                return error;
+              }
+            }
+
+            deactivateKey();
+          }
+        } catch (error) {
+          // toast.error(error)
+          return error;
+        }
+      }
+
+      validateKey()
     }
   })
 
@@ -31,13 +105,14 @@ const Home = () => {
       </Head>
 
       <div className="relative flex min-h-screen flex-col overflow-hidden">
+        <Toaster richColors closeButton position="bottom-center" />
         {display && <Key toggleDisplay={toggleDisplay} />}
 
         <div className='container px-10 md:px-16'>
-          <Header toggleDisplay={toggleDisplay} />
+          <Header coins={coins} toggleDisplay={toggleDisplay} localKey={localKey} />
           <Hero />
           <Story />
-          <Generate localKey={localKey} />
+          <Generate setCoins={setCoins} localKey={localKey} />
           <Testimonials />
           <Footer />
         </div>
@@ -46,7 +121,13 @@ const Home = () => {
   )
 }
 
-function Header({ toggleDisplay }) {
+function Header({ toggleDisplay, localKey, coins }) {
+
+  const deleteKey = () => {
+    localStorage.clear()
+    toast.success("The key has been deleted successfully!")
+  }
+
   return (
     <div>
       <div className='flex items-center pt-8 sm:pt-14 xl:pt-16 pb-14 justify-between'>
@@ -57,15 +138,19 @@ function Header({ toggleDisplay }) {
         </div>
 
         <div className='flex flex-col md:flex-row items-center justify-center space-x-3 space-y-3 md:space-y-0'>
-          <div>
-            <button className='bg-gray-500 text-sm hover:text-gray-900 flex items-center justify-center text-white hover:bg-gradient-to-tr from-teal-400 to-yellow-200 space-x-2 shadow-2xl transition-all px-2 md:px-4 py-1 md:py-2 md:text-[1rem] rounded-md'>
-              <a target={"_blank"} href="https://mommyai.lemonsqueezy.com/checkout/buy/fa520aba-d5d6-4496-a12b-8690529172e3">Pricing</a>
-            </button>
-          </div>
-          <div>
+          {coins == 0 && localKey && <button onClick={deleteKey} className='bg-gray-200 text-sm text-black flex items-center justify-center hover:text-white hover:bg-gradient-to-tr from-fuchsia-500 to-cyan-500 space-x-2 shadow-2xl transition-all px-2 md:px-4 py-1 md:py-2 md:text-[1rem] rounded-md'>
+            <p>delete key</p>
+          </button>}
+          {!localKey && <div>
             <button onClick={toggleDisplay} className='bg-gray-200 text-sm text-black flex items-center justify-center hover:text-white hover:bg-gradient-to-tr from-fuchsia-500 to-cyan-500 space-x-2 shadow-2xl transition-all px-2 md:px-4 py-1 md:py-2 md:text-[1rem] rounded-md'>
-              <p>Your key</p>
+              <p>paste key</p>
             </button>
+          </div>}
+          <div className="relative">
+            <button className='bg-gray-500 text-sm hover:text-gray-900 flex items-center justify-center text-white hover:bg-gradient-to-tr from-teal-400 to-yellow-200 space-x-2 shadow-2xl transition-all px-2 md:px-4 py-1 md:py-2 md:text-[1rem] rounded-md'>
+              <a target={"_blank"} href="https://mommyai.lemonsqueezy.com/checkout/buy/3abd94d1-12be-473a-ad17-86e441bbe123">pricing</a>
+            </button>
+            <p className="absolute whitespace-nowrap -translate-x-2 md:translate-x-0">{coins} coins left!</p>
           </div>
         </div>
       </div>
@@ -73,7 +158,7 @@ function Header({ toggleDisplay }) {
   )
 }
 
-function Key({ toggleDisplay, localKey }) {
+function Key({ toggleDisplay }) {
 
   const [key, setKey] = useState("")
 
@@ -81,18 +166,60 @@ function Key({ toggleDisplay, localKey }) {
     setKey(e.target.value)
   }
 
-  const handleActivate = () => {
-    localStorage.setItem("key", key)
+  const router = useRouter()
+
+  const coinVariants = {
+    "Letter": 200,
+    "Word": 500,
+    "Sentence": 1000
+  }
+
+  const handleActivate = async () => {
+    try {
+      const myHeaders = new Headers();
+      myHeaders.append("Accept", "application/json");
+      myHeaders.append("Accept", "application/x-www-form-urlencoded");
+
+      const date = new Date().toUTCString()
+      const raw = new URLSearchParams({
+        'license_key': key,
+        'instance_name': date
+      })
+
+      const requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow",
+      };
+
+      const response = await fetch("https://api.lemonsqueezy.com/v1/licenses/activate", requestOptions);
+      const result = await response.json();
+      if (result.activated) {
+        toast.success("Your license key was successfully activated!")
+        localStorage.setItem("key", key)
+        localStorage.setItem("instance_id", result.instance.id)
+        const variant = result.meta.variant_name
+        localStorage.setItem("coins", coinVariants[variant])
+        setTimeout(() => {
+          router.reload(window.location.pathname)
+        }, 2000);
+      }
+    } catch (error) {
+      toast.error(error)
+      return error;
+    }
   }
 
   return (
     <>
       <div className="fixed z-10 min-h-screen min-w-full text-gray-700 flex flex-col space-y-8 items-center justify-center bg-gray-200">
-        <h3 className="">Paste your license key</h3>
+        <h3 className="text-2xl">Activate License </h3>
+        <p className="max-w-3xl">To activate your license key, simply enter the license key we have sent to your email. If you haven't yet purchased any coins, you can purchase them <a className="text-blue-500 hover:text-purple-500 cursor-pointer underline hover:underline-offset-4 transition-all duration-500" href="https://mommyai.lemonsqueezy.com/checkout/buy/3abd94d1-12be-473a-ad17-86e441bbe123">here.</a></p>
         <div className="relative w-2/3">
           <input autoComplete="off" onChange={handleChange} value={key} type="text" id="key" className="w-full text-center block p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="K534N-KL45-N45B45J-45JB54K3" required />
 
-          {!localKey && <button onClick={handleActivate} type="submit" className={`text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800`}>Activate</button>}
+          <button onClick={handleActivate} type="submit" className={`text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800`}>Activate</button>
         </div>
         <button onClick={toggleDisplay} className="px-4 py-2 bg-blue-200 rounded-full hover:bg-blue-300">Close</button>
       </div>
@@ -134,6 +261,19 @@ function Story() {
     "The beast lunged at her with its sharp claws, but Princess Petunia was quick and agile. She dodged the beast's attacks and struck back with her sword. The battle was long and grueling, but in the end, Princess Petunia emerged victorious. She had slain the beast and broken the witch's spell.",
     "With the spell broken, the kingdom was restored to its former glory. The people rejoiced and threw a grand celebration in honor of Princess Petunia's bravery and heroism. And from that day forward, Princess Petunia was known as the Princess who slayed the witch with her sword.",
     "The End."]
+
+  const speak = () => {
+    const msg = new SpeechSynthesisUtterance()
+    const voices = window.speechSynthesis.getVoices()
+    msg.voice = voices[4]
+    msg.volume = 1
+    msg.rate = 1
+    msg.pitch = 1
+    msg.text = exampleStory.join(' ')
+    msg.lang = 'en-US'
+    speechSynthesis.speak(msg)
+  }
+
   return (
     <div id="story">
       <div className='flex flex-col items-center justify-center space-x-10 lg:flex-row'>
@@ -142,13 +282,13 @@ function Story() {
         </div>
 
         <div>
-          <h2 className="text-2xl py-3 md:px-8 font-semibold text-blue-300">Princess Petunia and the Battle Against the Bewitched Beast</h2>
-
+          <h2 className="text-2xl py-3 md:px-8 font-semibold text-yellow-300">Princess Petunia and the Battle Against the Bewitched Beast</h2>
+          <button onClick={speak} className="md:px-8 text-purple-300 hover:text-green-300 flex items-center gap-2 pt-2"><BsSoundwave /> read the story loud</button>
           <div className="bg-gradient-to-b from-black to-transparent mr-3 translate-y-11 h-12"></div>
           <div className="max-h-[250px] md:px-8 overflow-y-scroll">
             {exampleStory.map((para, i) => {
               return (
-                <p className="py-4" key={i}>{para}</p>
+                <p className="py-4 my-1" key={i}>{para}</p>
               )
             })}
           </div>
@@ -161,7 +301,7 @@ function Story() {
   )
 }
 
-function Generate({ localKey }) {
+function Generate({ localKey, setCoins, coins }) {
 
   const [userPrompt, setUserPrompt] = useState("")
   const [loading, setLoading] = useState(false)
@@ -173,45 +313,48 @@ function Generate({ localKey }) {
   }
 
   const handleSubmit = async (e) => {
-    setLoading(true)
     e.preventDefault()
+    setCoins(coins - 1);
 
-    try {
-      const myHeaders = new Headers();
-      myHeaders.append("Content-Type", "application/json");
+    if (localKey) {
+      setLoading(true)
+      try {
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
 
+        const raw = JSON.stringify({
+          userPrompt: userPrompt,
+        });
 
+        const requestOptions = {
+          method: "POST",
+          headers: myHeaders,
+          body: raw,
+        };
 
-      const raw = JSON.stringify({
-        userPrompt: userPrompt,
-      });
+        const response = await fetch("/api/openai", requestOptions);
+        const result = await response.json();
 
-      const requestOptions = {
-        method: "POST",
-        headers: myHeaders,
-        body: raw,
-      };
+        if (result.success) {
+          const textArray = result.text.split("\n\n")
+          const title = textArray[0]
 
-      const response = await fetch("/api/openai", requestOptions);
-      const result = await response.json();
+          let storyParas = textArray
+          storyParas.splice(0, 1)
 
-      if (result.success) {
-        const textArray = result.text.split("\n\n")
-        const title = textArray[0]
+          setTitle(title)
+          setStory(storyParas);
+        } else {
+          setTitle(result.message)
+        }
 
-        let storyParas = textArray
-        storyParas.splice(0, 1)
-
-        setTitle(title)
-        setStory(storyParas);
-      } else {
-        setTitle(result.message)
+        if (result) { setLoading(false) }
+      } catch (error) {
+        console.log("error: ", error);
+        return error;
       }
-
-      if (result) { setLoading(false) }
-    } catch (error) {
-      console.log("error: ", error);
-      return error;
+    } else {
+      toast.error("Please buy some coins first!")
     }
   }
 
@@ -241,6 +384,18 @@ function Generate({ localKey }) {
     setUserPrompt(suggestions[randomSuggest])
   }
 
+  const speak = () => {
+    const msg = new SpeechSynthesisUtterance()
+    const voices = window.speechSynthesis.getVoices()
+    msg.voice = voices[4]
+    msg.volume = 1
+    msg.rate = 1
+    msg.pitch = 1
+    msg.text = story.join(' ')
+    msg.lang = 'en-US'
+    speechSynthesis.speak(msg)
+  }
+
   return (
     <div id='generate'>
       <div className="flex flex-col space-y-8">
@@ -259,8 +414,8 @@ function Generate({ localKey }) {
           <form method="post" onSubmit={handleSubmit}>
             <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
             <div className="relative mx-auto lg:w-2/3">
-              <input autoComplete="off" onChange={handleChange} value={userPrompt} type="text" id="default-search" className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="a kid who became storyteller..." required />
-              <button disabled={loading || !localKey} type="submit" className={`text-white disabled:bg-purple-500 absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 ${loading && "animate-pulse"}`}>{loading ? "Generating" : "Generate"}</button>
+              <input autoComplete="off" maxLength={100} onChange={handleChange} value={userPrompt} type="text" id="default-search" className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="a kid who became storyteller..." required />
+              <button disabled={loading || coins == 0} type="submit" className={`text-white disabled:bg-purple-500 absolute right-2.5 bottom-3 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 ${loading && "animate-pulse"}`}>{loading ? "Generating" : <BsSend />}</button>
             </div>
           </form>
         </div>
@@ -283,6 +438,7 @@ function Generate({ localKey }) {
             </div>
             :
             <div className=" w-10/12 md:w-8/12 mx-auto">
+              <button onClick={speak} className="text-purple-300 hover:text-green-300 flex items-center gap-2 pb-4 pt-2"><BsSoundwave /> read the story loud</button>
               {<div>
                 <h3 className="py-8 text-3xl font-semibold">{title}</h3>
                 {story && story.map((para, index) => {
@@ -314,11 +470,11 @@ function Testimonials() {
     },
     {
       "author": "Jacob wilson",
-      "quote": "I didn't know what should I tell to create the story, the suggestion feature was really helpful for that."
+      "quote": "I didn't know what should I enter to create the story first, the suggestion feature was really helpful for that."
     },
     {
       "author": "Isla Walsh",
-      "quote": "I was hesitant to use this, as it could create inappropriate content, we cannot trust kids with it, but this does a good job. it refused to generate that story and instead told me another good story."
+      "quote": "I was hesitant to use this, as it could create inappropriate content, we cannot trust kids with it, but this does a good job at it. It refused to generate that story and instead told me another good story."
     },
     {
       "author": "William O'Neill",
@@ -326,7 +482,7 @@ function Testimonials() {
     },
     {
       "author": "Amelia Jones",
-      "quote": "Jimmy was so fascinated by this! He was so engaged with it! I would have recommend this to my friends."
+      "quote": "Jimmy was so fascinated by this! He was so engaged with it! I would recommend this to my friends."
     },
     {
       "author": "Jack Brown",
@@ -349,7 +505,7 @@ function Testimonials() {
           })}
         </div>
 
-        <p className="py-8 font-semibold text-lg">Send me an <a className="uppercase text-blue-500 hover:text-purple-500 cursor-pointer underline hover:underline-offset-4 transition-all duration-500" href="mailto:swagstoar@gmail.com">email</a> for queries and feedback.</p>
+        <p className="py-8 font-semibold text-lg">Send me an <a className="text-blue-500 hover:text-purple-500 cursor-pointer underline hover:underline-offset-4 transition-all duration-500" href="mailto:swagstoar@gmail.com">email</a> for queries and feedback.</p>
 
         <div className="my-8 xl:my-11 lg:my-11 w-5/6 h-[2px] bg-gradient-to-l from-[#000000] to-[#dbdbde]"></div>
       </div>

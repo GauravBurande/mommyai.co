@@ -674,6 +674,11 @@ scheduler@^0.23.0:
   dependencies:
     loose-envify "^1.1.0"
 
+sonner@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/sonner/-/sonner-0.2.0.tgz#11491f82e0081c7447e8ce69a921631ad0ad0e78"
+  integrity sha512-wxOkuIRoyF7nsXbz7JcpexGtSw58C9XZik6kVtKNxKpEEnfFsGyR08HQMabqEzAd0a8ARNuDH06UnEit4tvO+w==
+
 source-map-js@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/source-map-js/-/source-map-js-1.0.2.tgz#adbc361d9c62df380125e7f161f71c826f1e490c"
