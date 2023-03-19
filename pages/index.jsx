@@ -12,7 +12,6 @@ const Home = () => {
   const [display, setDisplay] = useState(false)
   const [localKey, setLocalKey] = useState()
   const [coins, setCoins] = useState(0)
-  console.log(coins - 1)
 
   const router = useRouter()
 
@@ -85,7 +84,7 @@ const Home = () => {
             deactivateKey();
           }
         } catch (error) {
-          // toast.error(error)
+          toast.error(error)
           return error;
         }
       }
@@ -105,7 +104,6 @@ const Home = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {/* <div className="relative flex min-h-screen flex-col overflow-hidden"> */}
       <Toaster richColors closeButton position="bottom-center" />
       {display && <Key toggleDisplay={toggleDisplay} />}
 
@@ -115,7 +113,6 @@ const Home = () => {
       <Generate coins={coins} setCoins={setCoins} localKey={localKey} />
       <Testimonials />
       <Footer />
-      {/* </div> */}
     </>
   )
 }
