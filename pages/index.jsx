@@ -398,7 +398,7 @@ function Generate({ localKey, setCoins, coins }) {
             <h3 className="text-xl text-center">Enter anything that comes in your mind: genre, plot, incident, character, </h3>
             <span className="flex items-center justify-center pb-8">
               <p>or try some suggestions:</p>
-              <button onClick={suggest} disabled={loading} className="text-3xl text-blue-200 hover:text-purple-300 font-medium p-2">
+              <button onClick={suggest} disabled={loading} className="text-3xl text-purple-600 hover:text-yellow-600 font-medium p-2">
                 <RiLightbulbFlashFill />
               </button>
             </span>
