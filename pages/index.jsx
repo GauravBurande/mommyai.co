@@ -85,7 +85,7 @@ const Home = () => {
             deactivateKey();
           }
         } catch (error) {
-          toast.error(error)
+          // toast.error(error)
           return error;
         }
       }
@@ -105,19 +105,17 @@ const Home = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className="relative flex min-h-screen flex-col overflow-hidden">
-        <Toaster richColors closeButton position="bottom-center" />
-        {display && <Key toggleDisplay={toggleDisplay} />}
+      {/* <div className="relative flex min-h-screen flex-col overflow-hidden"> */}
+      <Toaster richColors closeButton position="bottom-center" />
+      {display && <Key toggleDisplay={toggleDisplay} />}
 
-        <div className='container px-10 md:px-16'>
-          <Header coins={coins} toggleDisplay={toggleDisplay} localKey={localKey} />
-          <Hero />
-          <Story />
-          <Generate coins={coins} setCoins={setCoins} localKey={localKey} />
-          <Testimonials />
-          <Footer />
-        </div>
-      </div>
+      <Header coins={coins} toggleDisplay={toggleDisplay} localKey={localKey} />
+      <Hero />
+      <Story />
+      <Generate coins={coins} setCoins={setCoins} localKey={localKey} />
+      <Testimonials />
+      <Footer />
+      {/* </div> */}
     </>
   )
 }
@@ -131,7 +129,7 @@ function Header({ toggleDisplay, localKey, coins }) {
 
   return (
     <div>
-      <div className='flex items-center pt-8 sm:pt-14 xl:pt-16 pb-14 justify-between'>
+      <div className='flex bg-yellow-300 px-10 md:px-16 items-center pt-8 sm:pt-14 xl:pt-16 pb-14 justify-between'>
         <div className='w-[200px] mr-5'>
           <Link href={'/'}>
             <h2 className='text-3xl md:text-4xl font-semibold'>mommy<span className='text-gray-500'>AI</span>.co</h2>
@@ -231,9 +229,9 @@ function Key({ toggleDisplay }) {
 function Hero() {
   return (
     <div>
-      <div className='flex flex-col md:flex-row md:justify-center'>
+      <div className='flex pb-20 bg-yellow-300 px-10 md:px-16 flex-col md:flex-row md:justify-center'>
         <div className='flex flex-col order-1 md:order-none justify-center'>
-          <h2 className='text-5xl pb-10 font-bold max-w-6xl tracking-wide text-gray-200'>Fun and <span className="text-transparent bg-clip-text bg-gradient-to-tr from-teal-400 to-yellow-200">creative</span> way to engage your <span className="text-transparent bg-clip-text bg-gradient-to-tr from-fuchsia-500 to-cyan-500">children!</span></h2>
+          <h2 className='text-5xl pb-10 font-bold max-w-6xl tracking-wide text-gray-800'>Fun and <span className="text-transparent bg-clip-text bg-gradient-to-tr from-yellow-400 to-pink-500">creative</span> way to engage your <span className="text-transparent bg-clip-text bg-gradient-to-tr from-fuchsia-500 to-cyan-500">children!</span></h2>
           <div className='max-w-3xl space-y-3'>
             <p>Create stories on various topics that your children are sure to enjoy.
             </p>
@@ -244,12 +242,10 @@ function Hero() {
           </div>
         </div>
 
-        <div className='w-3/6'>
+        <div className='w-4/6 md:w-3/6'>
           <img className='rounded-3xl pb-8 md:pb-0' src="images/mommy.png" alt="mommy" />
         </div>
       </div>
-
-      <div className="my-8 xl:my-11 lg:my-11 w-5/6 h-[2px] bg-gradient-to-l from-[#000000] to-[#dbdbde]"></div>
     </div>
   )
 }
@@ -277,7 +273,7 @@ function Story() {
 
   return (
     <div id="story">
-      <div className='flex flex-col items-center justify-center space-x-10 lg:flex-row'>
+      <div className='flex bg-black text-white py-16 px-10 md:px-16 flex-col items-center justify-center space-x-10 lg:flex-row'>
         <div className="w-5/6 pb-8 md:pb-0">
           <img src="images/princess.png" alt="princess" />
         </div>
@@ -296,8 +292,6 @@ function Story() {
           <div className="bg-gradient-to-t from-black to-transparent mr-3 -translate-y-11 h-12"></div>
         </div>
       </div>
-
-      <div className="my-8 xl:my-11 lg:my-11 w-5/6 h-[2px] bg-gradient-to-l from-[#000000] to-[#dbdbde]"></div>
     </div>
   )
 }
@@ -401,7 +395,7 @@ function Generate({ localKey, setCoins, coins }) {
 
   return (
     <div id='generate'>
-      <div className="flex flex-col space-y-8">
+      <div className="flex py-16 bg-green-400 px-10 md:px-16 flex-col space-y-8">
         <div>
           <div>
             <h3 className="text-xl text-center">Enter anything that comes in your mind: genre, plot, incident, character, </h3>
@@ -454,8 +448,6 @@ function Generate({ localKey, setCoins, coins }) {
           }
         </div>
       </div>
-
-      <div className="my-8 xl:my-11 lg:my-11 w-5/6 h-[2.5px] bg-gradient-to-l from-[#000000] to-[#dbdbde]"></div>
     </div>
   )
 }
@@ -477,7 +469,7 @@ function Testimonials() {
     },
     {
       "author": "Isla Walsh",
-      "quote": "I was hesitant to use this, as it could create inappropriate content, we cannot trust kids with it, but this does a good job at it. It refused to generate that story and instead told me another good story."
+      "quote": "I was hesitant to use this, as it could create inappropriate content, we cannot trust kids with it. But it refused to generate that story and instead told me another good story."
     },
     {
       "author": "William O'Neill",
@@ -495,12 +487,12 @@ function Testimonials() {
 
   return (
     <>
-      <div>
+      <div className="px-10 py-16 md:px-16">
         <h3 className="text-3xl font-semibold py-8">What other parents are saying</h3>
         <div className="flex flex-nowrap space-x-4 md:mx-24 overflow-x-scroll">
           {testimonials.map((testimonial, i) => {
             return (
-              <div key={i} className="flex min-w-[20rem] bg-green-100 rounded-lg text-black px-7 py-4 flex-col justify-between">
+              <div key={i} className="flex min-w-[18rem] bg-blue-200 rounded-lg text-black px-7 py-4 flex-col justify-between">
                 <p>"{testimonial.quote}"</p>
                 <h6 className="text-lg font-semibold">{testimonial.author}</h6>
               </div>
@@ -509,8 +501,6 @@ function Testimonials() {
         </div>
 
         <p className="py-8 font-semibold text-lg">Send me an <a className="text-blue-500 hover:text-purple-500 cursor-pointer underline hover:underline-offset-4 transition-all duration-500" href="mailto:swagstoar@gmail.com">email</a> for queries and feedback.</p>
-
-        <div className="my-8 xl:my-11 lg:my-11 w-5/6 h-[2px] bg-gradient-to-l from-[#000000] to-[#dbdbde]"></div>
       </div>
     </>
   )

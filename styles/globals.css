@@ -8,8 +8,6 @@ font-family: 'Roboto Mono', monospace; */
 @tailwind utilities;
 
 :root {
-    --text-color: rgb(210, 210, 210);
-    --background-color: black;
     --primary: rebeccapurple;
     --secondary: cornflowerblue;
 }
@@ -42,9 +40,6 @@ html {
 
 
 body {
-    background-color: var(--background-color);
-    color: var(--text-color);
-
     font-family: 'Poppins', sans-serif;
 
     margin: 0;
