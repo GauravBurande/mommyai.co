@@ -12,6 +12,7 @@ const Home = () => {
   const [display, setDisplay] = useState(false)
   const [localKey, setLocalKey] = useState()
   const [coins, setCoins] = useState(0)
+  console.log(coins - 1)
 
   const router = useRouter()
 
@@ -84,7 +85,7 @@ const Home = () => {
             deactivateKey();
           }
         } catch (error) {
-          // toast.error(error)
+          toast.error(error)
           return error;
         }
       }
@@ -112,7 +113,7 @@ const Home = () => {
           <Header coins={coins} toggleDisplay={toggleDisplay} localKey={localKey} />
           <Hero />
           <Story />
-          <Generate setCoins={setCoins} localKey={localKey} />
+          <Generate coins={coins} setCoins={setCoins} localKey={localKey} />
           <Testimonials />
           <Footer />
         </div>
@@ -200,7 +201,7 @@ function Key({ toggleDisplay }) {
         localStorage.setItem("key", key)
         localStorage.setItem("instance_id", result.instance.id)
         const variant = result.meta.variant_name
-        localStorage.setItem("coins", coinVariants[variant])
+        localStorage.setItem("coins", JSON.stringify(coinVariants[variant]))
         setTimeout(() => {
           router.reload(window.location.pathname)
         }, 2000);
@@ -314,7 +315,6 @@ function Generate({ localKey, setCoins, coins }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    setCoins(coins - 1);
 
     if (localKey) {
       setLoading(true)
@@ -336,6 +336,9 @@ function Generate({ localKey, setCoins, coins }) {
         const result = await response.json();
 
         if (result.success) {
+          const newCoins = coins - 1
+          setCoins(newCoins)
+          localStorage.coins = newCoins
           const textArray = result.text.split("\n\n")
           const title = textArray[0]
 
