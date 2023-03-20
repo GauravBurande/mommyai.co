@@ -102,6 +102,9 @@ const Home = () => {
       <Head>
         <title>mommyAI | stories for kids</title>
         <link rel="icon" href="/favicon.ico" />
+
+        <meta name="description" content="Create stories on various topics that your children are sure to enjoy." />
+        <meta name="keywords" content="mommyai.co, mommyai, ai storyteller, stories for kids, create stories for kids, children, kids, generate stories for kids using ai, once upon a time, tales." />
       </Head>
 
       <Toaster richColors closeButton position="bottom-center" />
