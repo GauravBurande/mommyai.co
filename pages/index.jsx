@@ -105,6 +105,21 @@ const Home = () => {
 
         <meta name="description" content="Create stories on various topics that your children are sure to enjoy." />
         <meta name="keywords" content="mommyai.co, mommyai, ai storyteller, stories for kids, create stories for kids, children, kids, generate stories for kids using ai, once upon a time, tales." />
+
+        {/* open graph social meta tag */}
+        <meta property="og:title" content="mommyAI.co" />
+        <meta property="og:description" content="Create stories on various topics that your children are sure to enjoy." />
+        <meta property="og:url" content="https://mommyai.co" />
+        <meta property="og:image" content="images/mommy.png" />
+        <meta property="og:type" content="website" />
+
+        {/* open graph social meta tag */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="mommyAI.co" />
+        <meta name="twitter:description" content="Create stories on various topics that your children are sure to enjoy." />
+        <meta name="twitter:site" content="@gauravvan" />
+        <meta name="twitter:image" content="images/mommy.png" />
+        <meta name="twitter:creator" content="@gauravvan" />
       </Head>
 
       <Toaster richColors closeButton position="bottom-center" />
