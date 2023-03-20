@@ -214,7 +214,7 @@ function Key({ toggleDisplay }) {
     <>
       <div className="fixed z-10 min-h-screen min-w-full text-gray-700 flex flex-col space-y-8 items-center justify-center bg-gray-200">
         <h3 className="text-2xl">Activate License </h3>
-        <p className="max-w-3xl">To activate your license key, simply enter the license key we have sent to your email. If you haven't yet purchased any coins, you can purchase them <a className="text-blue-500 hover:text-purple-500 cursor-pointer underline hover:underline-offset-4 transition-all duration-500" href="https://mommyai.lemonsqueezy.com/checkout/buy/3abd94d1-12be-473a-ad17-86e441bbe123">here.</a></p>
+        <p className="max-w-3xl mx-auto px-5">To activate your license key, simply enter the license key we have sent to your email. If you haven't yet purchased any coins, you can purchase them <a className="text-blue-500 hover:text-purple-500 cursor-pointer underline hover:underline-offset-4 transition-all duration-500" href="https://mommyai.lemonsqueezy.com/checkout/buy/3abd94d1-12be-473a-ad17-86e441bbe123">here.</a></p>
         <div className="relative w-2/3">
           <input autoComplete="off" onChange={handleChange} value={key} type="text" id="key" className="w-full text-center block p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="K534N-KL45-N45B45J-45JB54K3" required />
 
