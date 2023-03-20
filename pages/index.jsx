@@ -431,7 +431,7 @@ function Generate({ localKey, setCoins, coins }) {
           <form method="post" onSubmit={handleSubmit}>
             <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
             <div className="relative mx-auto lg:w-2/3">
-              <input autoComplete="off" maxLength={100} onChange={handleChange} value={userPrompt} type="text" id="default-search" className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="a kid who became storyteller..." required />
+              <input autoComplete="off" maxLength={100} onChange={handleChange} value={userPrompt} type="text" id="default-search" className="block w-full p-4 pl-10 pr-14 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="a kid who became storyteller..." required />
               <button disabled={loading} type="submit" className={`text-white disabled:bg-purple-500 absolute right-2.5 bottom-3 bg-transparent hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm px-4 py-2 ${loading && "animate-pulse"}`}>{loading ? "Generating" : <BsSend />}</button>
             </div>
           </form>
