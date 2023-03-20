@@ -43,7 +43,6 @@ const Home = () => {
 
           const response = await fetch(`https://api.lemonsqueezy.com/v1/licenses/validate`, requestOptions);
           const result = await response.json();
-          console.log(result)
 
           if (!result.valid || result.license_key.status == 'inactive') {
             toast.error("Your subscription has ended!")
@@ -85,7 +84,7 @@ const Home = () => {
             deactivateKey();
           }
         } catch (error) {
-          toast.error(error)
+          toast.error("Sorry, there is a problem with our server.")
           return error;
         }
       }
@@ -327,7 +326,10 @@ function Generate({ localKey, setCoins, coins }) {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    if (localKey) {
+    if (localKey && coins != 0) {
+      if (coins == 0) {
+        toast.error('You have 0 coins left! Please buy more coins to create new stories.')
+      }
       setLoading(true)
       try {
         const myHeaders = new Headers();
@@ -429,7 +431,7 @@ function Generate({ localKey, setCoins, coins }) {
             <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
             <div className="relative mx-auto lg:w-2/3">
               <input autoComplete="off" maxLength={100} onChange={handleChange} value={userPrompt} type="text" id="default-search" className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="a kid who became storyteller..." required />
-              <button disabled={loading || (localKey && coins == 0)} type="submit" className={`text-white disabled:bg-purple-500 absolute right-2.5 bottom-3 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 ${loading && "animate-pulse"}`}>{loading ? "Generating" : <BsSend />}</button>
+              <button disabled={loading} type="submit" className={`text-white disabled:bg-purple-500 absolute right-2.5 bottom-3 bg-transparent hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm px-4 py-2 ${loading && "animate-pulse"}`}>{loading ? "Generating" : <BsSend />}</button>
             </div>
           </form>
         </div>
@@ -452,7 +454,7 @@ function Generate({ localKey, setCoins, coins }) {
             </div>
             :
             <div className=" w-10/12 md:w-8/12 mx-auto">
-              {story && <button onClick={speak} className="text-purple-300 hover:text-green-300 flex items-center gap-2 pb-4 pt-2"><BsSoundwave /> read the story loud</button>}
+              {story && <button onClick={speak} className="text-yellow-900 hover:text-green-900 flex items-center gap-2 pb-4 pt-2"><BsSoundwave /> read the story loud</button>}
               <div>
                 <h3 className="py-8 text-3xl font-semibold">{title}</h3>
                 {story && story.map((para, index) => {
