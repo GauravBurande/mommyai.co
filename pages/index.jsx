@@ -110,7 +110,7 @@ const Home = () => {
         <meta property="og:title" content="mommyAI.co" />
         <meta property="og:description" content="Create stories on various topics that your children are sure to enjoy." />
         <meta property="og:url" content="https://mommyai.co" />
-        <meta property="og:image" content="images/mommy.png" />
+        <meta property="og:image" content="https://mommyai.co/images/mommy.png" />
         <meta property="og:type" content="website" />
 
         {/* open graph social meta tag */}
@@ -118,7 +118,7 @@ const Home = () => {
         <meta name="twitter:title" content="mommyAI.co" />
         <meta name="twitter:description" content="Create stories on various topics that your children are sure to enjoy." />
         <meta name="twitter:site" content="@gauravvan" />
-        <meta name="twitter:image" content="images/mommy.png" />
+        <meta name="twitter:image" content="https://mommyai.co/images/mommy.png" />
         <meta name="twitter:creator" content="@gauravvan" />
       </Head>
 
