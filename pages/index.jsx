@@ -349,6 +349,7 @@ function Generate({ localKey, setCoins, coins }) {
         const result = await response.json();
 
         if (result.success) {
+          setUserPrompt("")
           const newCoins = coins - 1
           setCoins(newCoins)
           localStorage.coins = newCoins
