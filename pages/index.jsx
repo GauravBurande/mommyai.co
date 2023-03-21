@@ -362,6 +362,7 @@ function Generate({ localKey, setCoins, coins }) {
           setTitle(title)
           setStory(storyParas);
         } else {
+          toast.error(result.message)
           setTitle(result.message)
         }
 
