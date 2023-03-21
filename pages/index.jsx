@@ -1,4 +1,3 @@
-import Footer from "../components/Footer"
 import { useEffect, useState } from "react"
 import Head from "next/head"
 import Link from 'next/link'
@@ -6,6 +5,7 @@ import { RiLightbulbFlashFill } from "react-icons/ri"
 import { BsSend, BsSoundwave } from "react-icons/bs"
 import { Toaster, toast } from 'sonner'
 import { useRouter } from "next/router"
+import { motion } from "framer-motion"
 
 const Home = () => {
 
@@ -143,11 +143,16 @@ function Header({ toggleDisplay, localKey, coins }) {
   }
 
   return (
-    <div>
-      <div className='flex bg-yellow-300 px-10 md:px-16 items-center pt-8 sm:pt-14 xl:pt-16 pb-14 justify-between'>
+    <div className=" bg-yellow-300">
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 0.1 }}
+        viewport={{ once: true }}
+        className='flex px-10 md:px-16 items-center pt-8 sm:pt-14 xl:pt-16 pb-14 justify-between'>
         <div className='w-[200px] mr-5'>
           <Link href={'/'}>
-            <h2 className='text-3xl md:text-4xl font-semibold'>mommy<span className='text-gray-500'>AI</span>.co</h2>
+            <h2 className='text-3xl text-white md:text-4xl font-semibold'>mommy<span className='text-purple-500'>AI</span>.co</h2>
           </Link>
         </div>
 
@@ -161,13 +166,13 @@ function Header({ toggleDisplay, localKey, coins }) {
             </button>
           </div>}
           <div className="relative">
-            <button className='bg-gray-500 text-sm hover:text-gray-900 flex items-center justify-center text-white hover:bg-gradient-to-tr from-teal-400 to-yellow-200 space-x-2 shadow-2xl transition-all px-2 md:px-4 py-1 md:py-2 md:text-[1rem] rounded-md'>
+            <button className='bg-gray-500 text-sm hover:text-gray-900 flex items-center justify-center text-white hover:bg-gradient-to-tr from-teal-400 to-white space-x-2 shadow-2xl transition-all px-2 md:px-4 py-1 md:py-2 md:text-[1rem] rounded-md'>
               <a target={"_blank"} href="https://mommyai.lemonsqueezy.com/checkout/buy/3abd94d1-12be-473a-ad17-86e441bbe123">pricing</a>
             </button>
             <p className="absolute whitespace-nowrap -translate-x-2 md:translate-x-0">{coins} coins left!</p>
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   )
 }
@@ -244,10 +249,15 @@ function Key({ toggleDisplay }) {
 
 function Hero() {
   return (
-    <div>
-      <div className='flex pb-20 bg-yellow-300 px-10 md:px-16 flex-col md:flex-row md:justify-center'>
+    <div className=" bg-yellow-300">
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 0.1 }}
+        viewport={{ once: true }}
+        className='flex pb-20 px-10 md:px-16 flex-col md:flex-row md:justify-center'>
         <div className='flex flex-col order-1 md:order-none justify-center'>
-          <h2 className='text-5xl pb-10 font-bold max-w-6xl tracking-wide text-gray-800'>Fun and <span className="text-transparent bg-clip-text bg-gradient-to-tr from-yellow-400 to-pink-500">creative</span> way to engage your <span className="text-transparent bg-clip-text bg-gradient-to-tr from-fuchsia-500 to-cyan-500">children!</span></h2>
+          <h2 className='text-5xl pb-10 font-bold max-w-6xl tracking-wide text-purple-700'>Fun and <span className="text-white">creative</span> way to engage your <span className="text-white">children!</span></h2>
           <div className='max-w-3xl space-y-3'>
             <p>Create stories on various topics that your children are sure to enjoy.
             </p>
@@ -261,7 +271,7 @@ function Hero() {
         <div className='w-4/6 md:w-3/6'>
           <img className='rounded-3xl pb-8 md:pb-0' src="images/mommy.png" alt="mommy" />
         </div>
-      </div>
+      </motion.div>
     </div>
   )
 }
@@ -288,8 +298,13 @@ function Story() {
   }
 
   return (
-    <div id="story">
-      <div className='flex bg-black text-white py-16 px-10 md:px-16 flex-col items-center justify-center space-x-10 lg:flex-row'>
+    <div className=" bg-black" id="story">
+      <motion.div
+        initial={{ opacity: 0, y: '40vh' }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: .8 }}
+        viewport={{ once: true, amount: "some" }}
+        className='flex text-white py-16 px-10 md:px-16 flex-col items-center justify-center space-x-10 lg:flex-row'>
         <div className="w-5/6 pb-8 md:pb-0">
           <img src="images/princess.png" alt="princess" />
         </div>
@@ -307,7 +322,7 @@ function Story() {
           </div>
           <div className="bg-gradient-to-t from-black to-transparent mr-3 -translate-y-11 h-12"></div>
         </div>
-      </div>
+      </motion.div>
     </div>
   )
 }
@@ -415,8 +430,13 @@ function Generate({ localKey, setCoins, coins }) {
   }
 
   return (
-    <div id='generate'>
-      <div className="flex py-16 bg-green-400 px-10 md:px-16 flex-col space-y-8">
+    <div className=" bg-green-400" id='generate'>
+      <motion.div
+        initial={{ opacity: 0, y: '40vh' }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: .8 }}
+        viewport={{ once: true, amount: "some" }}
+        className="flex py-16 px-10 md:px-16 flex-col space-y-8">
         <div>
           <div>
             <h3 className="text-xl text-center">Enter anything that comes in your mind: genre, plot, incident, character, </h3>
@@ -468,7 +488,7 @@ function Generate({ localKey, setCoins, coins }) {
             </div>
           }
         </div>
-      </div>
+      </motion.div>
     </div>
   )
 }
@@ -508,7 +528,12 @@ function Testimonials() {
 
   return (
     <>
-      <div className="px-10 py-16 md:px-16">
+      <motion.div
+        initial={{ opacity: 0, y: '40vh' }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: .8 }}
+        viewport={{ once: true, amount: "some" }}
+        className="px-10 py-16 md:px-16">
         <h3 className="text-3xl font-semibold py-8">What other parents are saying</h3>
         <div className="flex flex-nowrap space-x-4 md:mx-24 overflow-x-scroll">
           {testimonials.map((testimonial, i) => {
@@ -522,8 +547,25 @@ function Testimonials() {
         </div>
 
         <p className="py-8 font-semibold text-lg">Send me an <a className="text-blue-500 hover:text-purple-500 cursor-pointer underline hover:underline-offset-4 transition-all duration-500" href="mailto:swagstoar@gmail.com">email</a> for queries and feedback.</p>
-      </div>
+      </motion.div>
     </>
+  )
+}
+
+function Footer() {
+  return (
+    <div className=" bg-orange-300">
+      <motion.div
+        initial={{ opacity: 0, y: '40vh' }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: .8 }}
+        viewport={{ once: true, amount: "some" }}
+        className='px-10 md:px-16'>
+        <div className='py-20 flex items-center justify-center md:justify-start'>
+          <p>Crafted by <span className='font-[550] hover:text-gray-500'><a href="https://twitter.com/gauravvan">Gaurav</a></span></p>
+        </div>
+      </motion.div>
+    </div>
   )
 }
 
