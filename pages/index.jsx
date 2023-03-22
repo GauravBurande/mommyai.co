@@ -556,10 +556,6 @@ function Footer() {
   return (
     <div className=" bg-orange-300">
       <motion.div
-        initial={{ opacity: 0, y: '40vh' }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: .8 }}
-        viewport={{ once: true, amount: "some" }}
         className='px-10 md:px-16'>
         <div className='py-20 flex items-center justify-center md:justify-start'>
           <p>Crafted by <span className='font-[550] hover:text-gray-500'><a href="https://twitter.com/gauravvan">Gaurav</a></span></p>
