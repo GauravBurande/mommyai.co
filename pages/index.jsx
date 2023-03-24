@@ -11,18 +11,20 @@ const Home = () => {
 
   const [display, setDisplay] = useState(false)
   const [localKey, setLocalKey] = useState()
-  const [coins, setCoins] = useState(0)
+  const [coins, setCoins] = useState(5)
 
   const router = useRouter()
 
   useEffect(() => {
     const key = typeof window !== "undefined" && window.localStorage.getItem("key")
     const coins = typeof window !== "undefined" && window.localStorage.getItem("coins")
-    const instance_id = typeof window !== "undefined" && window.localStorage.getItem("instance_id")
+
+    if (coins) {
+      setCoins(parseInt(coins))
+    }
 
     if (key) {
       setLocalKey(key)
-      setCoins(parseInt(coins))
 
       const validateKey = async () => {
         try {
@@ -48,40 +50,44 @@ const Home = () => {
             toast.error("Your subscription has ended!")
             localStorage.clear()
 
-            const deactivateKey = async () => {
-              try {
-                const myHeaders = new Headers();
-                myHeaders.append("Accept", "application/json");
-                myHeaders.append("Accept", "application/x-www-form-urlencoded");
+            setTimeout(() => {
+              router.reload(window.location.pathname)
+            }, 2000);
 
-                const raw = new URLSearchParams({
-                  'license_key': key,
-                  'instance_id': instance_id
-                })
+            // const deactivateKey = async () => {
+            //   try {
+            //     const myHeaders = new Headers();
+            //     myHeaders.append("Accept", "application/json");
+            //     myHeaders.append("Accept", "application/x-www-form-urlencoded");
 
-                const requestOptions = {
-                  method: "POST",
-                  headers: myHeaders,
-                  body: raw,
-                  redirect: "follow",
-                };
+            //     const raw = new URLSearchParams({
+            //       'license_key': key,
+            //       'instance_id': instance_id
+            //     })
 
-                const response = await fetch(`https://api.lemonsqueezy.com/v1/licenses/deactivate`, requestOptions);
-                const result = await response.json();
+            //     const requestOptions = {
+            //       method: "POST",
+            //       headers: myHeaders,
+            //       body: raw,
+            //       redirect: "follow",
+            //     };
 
-                if (result.deactivated) {
-                  toast.error("The license key has been deactivated!")
-                  setTimeout(() => {
-                    router.reload(window.location.pathname)
-                  }, 2000);
-                }
-              } catch (error) {
-                toast.error(error)
-                return error;
-              }
-            }
+            //     const response = await fetch(`https://api.lemonsqueezy.com/v1/licenses/deactivate`, requestOptions);
+            //     const result = await response.json();
 
-            deactivateKey();
+            //     if (result.deactivated) {
+            //       toast.error("The license key has been deactivated!")
+            //       setTimeout(() => {
+            //         router.reload(window.location.pathname)
+            //       }, 2000);
+            //     }
+            //   } catch (error) {
+            //     toast.error(error)
+            //     return error;
+            //   }
+            // }
+
+            // deactivateKey();
           }
         } catch (error) {
           toast.error("Sorry, there is a problem with our server.")
@@ -123,13 +129,13 @@ const Home = () => {
       </Head>
 
       <Toaster richColors closeButton position="bottom-center" />
-      {display && <Key toggleDisplay={toggleDisplay} />}
+      {display && <Key coins={coins} toggleDisplay={toggleDisplay} />}
 
       <Header coins={coins} toggleDisplay={toggleDisplay} localKey={localKey} />
       <Hero />
       <Story />
       <Generate coins={coins} setCoins={setCoins} localKey={localKey} />
-      <Testimonials />
+      {/* <Testimonials /> */}
       <Footer />
     </>
   )
@@ -177,7 +183,7 @@ function Header({ toggleDisplay, localKey, coins }) {
   )
 }
 
-function Key({ toggleDisplay }) {
+function Key({ toggleDisplay, coins }) {
 
   const [key, setKey] = useState("")
 
@@ -220,14 +226,15 @@ function Key({ toggleDisplay }) {
         localStorage.setItem("key", key)
         localStorage.setItem("instance_id", result.instance.id)
         const variant = result.meta.variant_name
-        localStorage.setItem("coins", JSON.stringify(coinVariants[variant]))
+        localStorage.setItem("coins", JSON.stringify(coinVariants[variant] + coins))
         setTimeout(() => {
           router.reload(window.location.pathname)
-        }, 2000);
+        }, 1000);
+      } else if (result.error) {
+        toast.error(result.error)
       }
     } catch (error) {
       toast.error(error)
-      return error;
     }
   }
 
@@ -341,9 +348,9 @@ function Generate({ localKey, setCoins, coins }) {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    if (localKey && coins != 0) {
-      if (coins == 0) {
-        toast.error('You have 0 coins left! Please buy more coins to create new stories.')
+    if (coins != 0) {
+      if (!localKey) {
+        toast.error("Purchase more coins to use mommyAI.")
       }
       setLoading(true)
       try {
@@ -380,14 +387,13 @@ function Generate({ localKey, setCoins, coins }) {
           toast.error(result.message)
           setTitle(result.message)
         }
-
         if (result) { setLoading(false) }
       } catch (error) {
-        console.log("error: ", error);
+        toast.error(error.message)
         return error;
       }
     } else {
-      toast.error("Please buy some coins first!")
+      toast.error("You have 0 coins left! Please buy more coins to create new stories.")
     }
   }
 
@@ -554,7 +560,7 @@ function Testimonials() {
 
 function Footer() {
   return (
-    <div className=" bg-orange-300">
+    <div className=" bg-yellow-300">
       <motion.div
         className='px-10 md:px-16'>
         <div className='py-20 flex items-center justify-center md:justify-start'>
