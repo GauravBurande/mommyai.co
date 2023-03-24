@@ -158,7 +158,7 @@ function Header({ toggleDisplay, localKey, coins }) {
         className='flex px-10 md:px-16 items-center pt-8 sm:pt-14 xl:pt-16 pb-14 justify-between'>
         <div className='w-[200px] mr-5'>
           <Link href={'/'}>
-            <h2 className='text-3xl text-white md:text-4xl font-semibold'>mommy<span className='text-purple-500'>AI</span>.co</h2>
+            <h2 className='text-3xl text-white md:text-4xl font-semibold'>mommy<span className='text-purple-700'>AI</span>.co</h2>
           </Link>
         </div>
 
@@ -560,11 +560,11 @@ function Testimonials() {
 
 function Footer() {
   return (
-    <div className=" bg-yellow-300">
+    <div className=" bg-purple-700 text-white">
       <motion.div
         className='px-10 md:px-16'>
         <div className='py-20 flex items-center justify-center md:justify-start'>
-          <p>Crafted by <span className='font-[550] hover:text-gray-500'><a href="https://twitter.com/gauravvan">Gaurav</a></span></p>
+          <p>Crafted by <span className='font-[550] hover:text-gray-300'><a href="https://twitter.com/gauravvan">Gaurav</a></span></p>
         </div>
       </motion.div>
     </div>
