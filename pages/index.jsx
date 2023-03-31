@@ -119,7 +119,6 @@ function Header({ toggleDisplay, localKey, coins }) {
         initial={{ opacity: 0, x: "-40vh" }}
         whileInView={{ opacity: 1, x: 0 }}
         transition={{ duration: .4 }}
-        viewport={{ once: true }}
         className='flex px-10 md:px-16 items-center pt-8 sm:pt-14 xl:pt-16 pb-14 justify-between'>
         <div className='w-[200px] mr-5'>
           <Link href={'/'}>
@@ -223,10 +222,9 @@ function Hero() {
   return (
     <div className=" bg-yellow-300">
       <motion.div
-        initial={{ opacity: 0, x: "-40vh" }}
-        whileInView={{ opacity: 1, x: 0 }}
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
         transition={{ duration: .4 }}
-        viewport={{ once: true }}
         className='flex pb-20 px-10 md:px-16 flex-col md:flex-row md:justify-center'>
         <div className='flex flex-col order-1 md:order-none justify-center'>
           <h2 className='text-5xl pb-10 font-bold max-w-6xl tracking-wide text-purple-700'>Fun and <span className="text-white">creative</span> way to engage your <span className="text-white">children!</span></h2>
@@ -275,7 +273,7 @@ function Story() {
         initial={{ opacity: 0, x: '40vh' }}
         whileInView={{ opacity: 1, x: 0 }}
         transition={{ duration: 1 }}
-        viewport={{ once: true, amount: "some" }}
+        viewport={{ amount: "some" }}
         className='flex text-white py-16 px-10 md:px-16 flex-col items-center justify-center space-x-10 lg:flex-row'>
         <div className="w-5/6 pb-8 md:pb-0">
           <img src="images/princess.png" alt="princess" />
@@ -283,7 +281,7 @@ function Story() {
 
         <div>
           <h2 className="text-2xl py-3 md:px-8 font-semibold text-yellow-300">Princess Petunia and the Battle Against the Bewitched Beast</h2>
-          <button onClick={speak} className="md:px-8 text-purple-300 hover:text-green-300 flex items-center gap-2 pt-2"><BsSoundwave /> read the story loud</button>
+          <button onClick={speak} className="md:mx-8 text-purple-800 bg-white text-sm hover:bg-purple-200 hover:text-green-600 flex items-center gap-2 px-3 rounded-full py-2"><BsSoundwave /> Listen</button>
           <div className="bg-gradient-to-b from-black to-transparent mr-3 translate-y-11 h-12"></div>
           <div className="max-h-[250px] md:px-8 overflow-y-scroll">
             {exampleStory.map((para, i) => {
@@ -406,7 +404,7 @@ function Generate({ localKey, setCoins, coins }) {
         initial={{ opacity: 0, x: '40vh' }}
         whileInView={{ opacity: 1, x: 0 }}
         transition={{ duration: 1 }}
-        viewport={{ once: true, amount: "some" }}
+        viewport={{ amount: "some" }}
         className="flex py-16 px-10 md:px-16 flex-col space-y-8">
         <div>
           <div>
@@ -447,7 +445,7 @@ function Generate({ localKey, setCoins, coins }) {
             </div>
             :
             <div className=" w-10/12 md:w-8/12 mx-auto">
-              {story && <button onClick={speak} className="text-yellow-900 hover:text-green-900 flex items-center gap-2 pb-4 pt-2"><BsSoundwave /> read the story loud</button>}
+              {story && <button onClick={speak} className="text-yellow-900 bg-white hover:text-green-900 flex items-center gap-2 px-3 rounded-full py-2"><BsSoundwave />Listen</button>}
               <div>
                 <h3 className="py-8 text-3xl font-semibold">{title}</h3>
                 {story && story.map((para, index) => {
