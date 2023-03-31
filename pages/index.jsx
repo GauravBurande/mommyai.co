@@ -116,9 +116,9 @@ function Header({ toggleDisplay, localKey, coins }) {
   return (
     <div className=" bg-yellow-300">
       <motion.div
-        initial={{ opacity: 0, x: "-40vh" }}
-        whileInView={{ opacity: 1, x: 0 }}
-        transition={{ duration: .4 }}
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: .7 }}
         className='flex px-10 md:px-16 items-center pt-8 sm:pt-14 xl:pt-16 pb-14 justify-between'>
         <div className='w-[200px] mr-5'>
           <Link href={'/'}>
@@ -224,7 +224,7 @@ function Hero() {
       <motion.div
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
-        transition={{ duration: .4 }}
+        transition={{ duration: .7 }}
         className='flex pb-20 px-10 md:px-16 flex-col md:flex-row md:justify-center'>
         <div className='flex flex-col order-1 md:order-none justify-center'>
           <h2 className='text-5xl pb-10 font-bold max-w-6xl tracking-wide text-purple-700'>Fun and <span className="text-white">creative</span> way to engage your <span className="text-white">children!</span></h2>
