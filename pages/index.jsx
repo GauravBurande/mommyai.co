@@ -53,41 +53,6 @@ const Home = () => {
             setTimeout(() => {
               router.reload(window.location.pathname)
             }, 2000);
-
-            // const deactivateKey = async () => {
-            //   try {
-            //     const myHeaders = new Headers();
-            //     myHeaders.append("Accept", "application/json");
-            //     myHeaders.append("Accept", "application/x-www-form-urlencoded");
-
-            //     const raw = new URLSearchParams({
-            //       'license_key': key,
-            //       'instance_id': instance_id
-            //     })
-
-            //     const requestOptions = {
-            //       method: "POST",
-            //       headers: myHeaders,
-            //       body: raw,
-            //       redirect: "follow",
-            //     };
-
-            //     const response = await fetch(`https://api.lemonsqueezy.com/v1/licenses/deactivate`, requestOptions);
-            //     const result = await response.json();
-
-            //     if (result.deactivated) {
-            //       toast.error("The license key has been deactivated!")
-            //       setTimeout(() => {
-            //         router.reload(window.location.pathname)
-            //       }, 2000);
-            //     }
-            //   } catch (error) {
-            //     toast.error(error)
-            //     return error;
-            //   }
-            // }
-
-            // deactivateKey();
           }
         } catch (error) {
           toast.error("Sorry, there is a problem with our server.")
@@ -151,9 +116,9 @@ function Header({ toggleDisplay, localKey, coins }) {
   return (
     <div className=" bg-yellow-300">
       <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ duration: 0.1 }}
+        initial={{ opacity: 0, x: "-40vh" }}
+        whileInView={{ opacity: 1, x: 0 }}
+        transition={{ duration: .4 }}
         viewport={{ once: true }}
         className='flex px-10 md:px-16 items-center pt-8 sm:pt-14 xl:pt-16 pb-14 justify-between'>
         <div className='w-[200px] mr-5'>
@@ -258,9 +223,9 @@ function Hero() {
   return (
     <div className=" bg-yellow-300">
       <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ duration: 0.1 }}
+        initial={{ opacity: 0, x: "-40vh" }}
+        whileInView={{ opacity: 1, x: 0 }}
+        transition={{ duration: .4 }}
         viewport={{ once: true }}
         className='flex pb-20 px-10 md:px-16 flex-col md:flex-row md:justify-center'>
         <div className='flex flex-col order-1 md:order-none justify-center'>
@@ -307,9 +272,9 @@ function Story() {
   return (
     <div className=" bg-black" id="story">
       <motion.div
-        initial={{ opacity: 0, y: '40vh' }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: .8 }}
+        initial={{ opacity: 0, x: '40vh' }}
+        whileInView={{ opacity: 1, x: 0 }}
+        transition={{ duration: 1 }}
         viewport={{ once: true, amount: "some" }}
         className='flex text-white py-16 px-10 md:px-16 flex-col items-center justify-center space-x-10 lg:flex-row'>
         <div className="w-5/6 pb-8 md:pb-0">
@@ -438,9 +403,9 @@ function Generate({ localKey, setCoins, coins }) {
   return (
     <div className=" bg-green-400" id='generate'>
       <motion.div
-        initial={{ opacity: 0, y: '40vh' }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: .8 }}
+        initial={{ opacity: 0, x: '40vh' }}
+        whileInView={{ opacity: 1, x: 0 }}
+        transition={{ duration: 1 }}
         viewport={{ once: true, amount: "some" }}
         className="flex py-16 px-10 md:px-16 flex-col space-y-8">
         <div>
@@ -560,7 +525,7 @@ function Testimonials() {
 
 function Footer() {
   return (
-    <div className=" bg-purple-700 text-white">
+    <div>
       <motion.div
         className='px-10 md:px-16'>
         <div className='py-20 flex items-center justify-center md:justify-start'>
