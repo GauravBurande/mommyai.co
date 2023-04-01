@@ -84,7 +84,7 @@ const Home = () => {
         <meta property="og:image" content="https://mommyai.co/images/mommy.png" />
         <meta property="og:type" content="website" />
 
-        {/* open graph social meta tag */}
+        {/* twitter card social meta tag */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="mommyAI.co" />
         <meta name="twitter:description" content="Create stories on various topics that your children are sure to enjoy." />
@@ -96,12 +96,13 @@ const Home = () => {
       <Toaster richColors closeButton position="bottom-center" />
       {display && <Key coins={coins} toggleDisplay={toggleDisplay} />}
 
-      <Header coins={coins} toggleDisplay={toggleDisplay} localKey={localKey} />
-      <Hero />
-      <Story />
-      <Generate coins={coins} setCoins={setCoins} localKey={localKey} />
-      {/* <Testimonials /> */}
-      <Footer />
+      <div className="w-screen overflow-hidden">
+        <Header coins={coins} toggleDisplay={toggleDisplay} localKey={localKey} />
+        <Hero />
+        <Story />
+        <Generate coins={coins} setCoins={setCoins} localKey={localKey} />
+        <Footer />
+      </div>
     </>
   )
 }
@@ -315,8 +316,8 @@ function Generate({ localKey, setCoins, coins }) {
       if (!localKey) {
         toast.error("Purchase more coins to use mommyAI.")
       }
-      setLoading(true)
       try {
+        setLoading(true)
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
 
@@ -347,12 +348,13 @@ function Generate({ localKey, setCoins, coins }) {
           setTitle(title)
           setStory(storyParas);
         } else {
-          toast.error(result.message)
-          setTitle(result.message)
+          toast.error("sorry, there is some issue with our servers!")
+          setTitle("sorry, there is some issue with our servers!")
         }
         if (result) { setLoading(false) }
       } catch (error) {
         toast.error(error.message)
+        setLoading(false)
         return error;
       }
     } else {
