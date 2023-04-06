@@ -96,7 +96,7 @@ const Home = () => {
       <Toaster richColors closeButton position="bottom-center" />
       {display && <Key coins={coins} toggleDisplay={toggleDisplay} />}
 
-      <div className="w-[99.5vw] overflow-hidden">
+      <div className="w-[99vw] overflow-hidden">
         <Header coins={coins} toggleDisplay={toggleDisplay} localKey={localKey} />
         <Hero />
         <Story />
@@ -350,8 +350,7 @@ function Generate({ localKey, setCoins, coins }) {
           setTitle(title)
           setStory(storyParas);
         } else {
-          toast.error(result.message)
-          setTitle(result.message)
+          toast.error("Sorry, there was a problem with our server. Please try again!")
         }
         if (result) { setLoading(false) }
       } catch (error) {
