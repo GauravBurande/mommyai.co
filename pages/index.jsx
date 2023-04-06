@@ -96,7 +96,7 @@ const Home = () => {
       <Toaster richColors closeButton position="bottom-center" />
       {display && <Key coins={coins} toggleDisplay={toggleDisplay} />}
 
-      <div className="w-screen overflow-hidden">
+      <div className="w-[99.5vw] overflow-hidden">
         <Header coins={coins} toggleDisplay={toggleDisplay} localKey={localKey} />
         <Hero />
         <Story />
@@ -271,7 +271,7 @@ function Story() {
   return (
     <div className=" bg-black" id="story">
       <motion.div
-        initial={{ opacity: 0, x: '40vh' }}
+        initial={{ opacity: 0, x: '40vw' }}
         whileInView={{ opacity: 1, x: 0 }}
         transition={{ duration: 1 }}
         viewport={{ amount: "some" }}
@@ -350,8 +350,8 @@ function Generate({ localKey, setCoins, coins }) {
           setTitle(title)
           setStory(storyParas);
         } else {
-          toast.error("sorry, there is some issue with our servers!")
-          setTitle("sorry, there is some issue with our servers!")
+          toast.error(result.message)
+          setTitle(result.message)
         }
         if (result) { setLoading(false) }
       } catch (error) {
@@ -405,7 +405,7 @@ function Generate({ localKey, setCoins, coins }) {
   return (
     <div className=" bg-green-400" id='generate'>
       <motion.div
-        initial={{ opacity: 0, x: '40vh' }}
+        initial={{ opacity: 0, x: '40vw' }}
         whileInView={{ opacity: 1, x: 0 }}
         transition={{ duration: 1 }}
         viewport={{ amount: "some" }}
@@ -502,7 +502,7 @@ function Testimonials() {
   return (
     <>
       <motion.div
-        initial={{ opacity: 0, x: '40vh' }}
+        initial={{ opacity: 0, x: '40vw' }}
         whileInView={{ opacity: 1, x: 0 }}
         transition={{ duration: 1 }}
         viewport={{ amount: "some" }}
