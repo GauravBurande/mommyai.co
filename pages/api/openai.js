@@ -18,23 +18,26 @@ export default async function handler(
             .json({ error: true, message: "No input prompt found!" });
     }
     try {
-        const prompt = `If I ask inappropriate, contaning maicious or dirty words, explicit, story to generate, then decline my request,explain why and don't tell me any story otherwise do as I say! tell me entertaining, engaging and imaginative story with a title with a title first.With extreme randomness, of ${userPrompt}. whenever a statement can cause why, who, how and what type of question, explain the statement. don't overexplain things. Just give me the story with title and nothing else!`
 
-        const response = await openai.createCompletion({
-            model: "text-davinci-003",
-            prompt: prompt,
-            temperature: 0.7,
-            max_tokens: 1500,
-            top_p: 1,
-            frequency_penalty: 0,
-            presence_penalty: 0,
+        const messages = [
+            { role: "user", content: userPrompt }
+        ]
+
+        const response = await openai.createChatCompletion({
+            model: "gpt-3.5-turbo",
+            messages: messages,
+            max_tokens: 2500,
+            temperature: 0.8
         });
 
-        const text = response.data.choices[0].text?.trim() || "Sorry, there was a problem!";
+        const text = response.data.choices[0].message.content?.trim() || "Sorry, there was a problem!";
 
         res.status(200).json({ success: true, text: text });
     } catch (error) {
-        res.status(500).json({ error: true, message: error });
-        console.log(error)
+        if (error.response) {
+            res.status(error.response.status).json({ error: true, message: error.response.data });
+        } else {
+            res.status(500).json({ error: true, message: error.message });
+        }
     }
 }

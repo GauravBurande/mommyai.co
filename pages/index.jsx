@@ -321,8 +321,10 @@ function Generate({ localKey, setCoins, coins }) {
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
 
+        const prompt = `If I ask inappropriate, contaning maicious or dirty words, explicit, story to generate, then decline my request,explain why and don't tell me any story otherwise do as I say! tell me entertaining, engaging and imaginative story with a title with a title first.With extreme randomness, of ${userPrompt}. whenever a statement can cause why, who, how and what type of question, explain the statement. don't overexplain things. Just give me the story with title and nothing else!`
+
         const raw = JSON.stringify({
-          userPrompt: userPrompt,
+          userPrompt: prompt,
         });
 
         const requestOptions = {
@@ -447,7 +449,7 @@ function Generate({ localKey, setCoins, coins }) {
             </div>
             :
             <div className=" w-10/12 md:w-8/12 mx-auto">
-              {story && <button onClick={speak} className="text-yellow-900 bg-white hover:text-green-900 flex items-center gap-2 px-3 rounded-full py-2"><BsSoundwave />Listen</button>}
+              {story && <button onClick={speak} className="text-yellow-900 hover:bg-yellow-100 bg-white hover:text-green-900 flex items-center gap-2 px-3 rounded-full py-2"><BsSoundwave />Listen</button>}
               <div>
                 <h3 className="py-8 text-3xl font-semibold">{title}</h3>
                 {story && story.map((para, index) => {
@@ -500,10 +502,10 @@ function Testimonials() {
   return (
     <>
       <motion.div
-        initial={{ opacity: 0, y: '40vh' }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: .8 }}
-        viewport={{ once: true, amount: "some" }}
+        initial={{ opacity: 0, x: '40vh' }}
+        whileInView={{ opacity: 1, x: 0 }}
+        transition={{ duration: 1 }}
+        viewport={{ amount: "some" }}
         className="px-10 py-16 md:px-16">
         <h3 className="text-3xl font-semibold py-8">What other parents are saying</h3>
         <div className="flex flex-nowrap space-x-4 md:mx-24 overflow-x-scroll">
