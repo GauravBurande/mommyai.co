@@ -96,7 +96,7 @@ const Home = () => {
       <Toaster richColors closeButton position="bottom-center" />
       {display && <Key coins={coins} toggleDisplay={toggleDisplay} />}
 
-      <div className="w-[99vw] overflow-hidden">
+      <div className="w-[99.2vw] overflow-hidden">
         <Header coins={coins} toggleDisplay={toggleDisplay} localKey={localKey} />
         <Hero />
         <Story />
