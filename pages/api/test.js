@@ -24,6 +24,8 @@ export default async function handler(
         const response = await openai.createChatCompletion({
             model: "gpt-3.5-turbo",
             messages: messages,
+            temperature: 0.7,
+            max_tokens: 1000
         });
 
         const text = response.data.choices[0].message.content?.trim() || "Sorry, there was a problem!";
