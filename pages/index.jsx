@@ -314,17 +314,26 @@ function Generate({ localKey, setCoins, coins }) {
 
     if (coins != 0) {
       if (!localKey) {
-        toast.error("Purchase more coins to use mommyAI.")
+        toast.error("Please buy some more coins to enjoy using mommyAI.")
       }
       try {
         setLoading(true)
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
+        myHeaders.append('Authorization', `Bearer ${process.env.NEXT_PUBLIC_OPENAI_KEY}`)
 
-        const prompt = `If I ask inappropriate, contaning maicious or dirty words, explicit, story to generate, then decline my request,explain why and don't tell me any story otherwise do as I say! tell me entertaining, engaging and imaginative story with a title with a title first.With extreme randomness, of ${userPrompt}. whenever a statement can cause why, who, how and what type of question, explain the statement. don't overexplain things. Just give me the story with title and nothing else!`
+        const prompt = `If I ask inappropriate, contaning maicious dirty words, explicit story to generate then decline my request,explain why and don't tell me any story otherwise do as I say! tell me entertaining, engaging and imaginative story with a title first. With extreme randomness, of ${userPrompt}. whenever a statement can cause why, who, how and what type of question, explain the statement. don't overexplain things. Just give me the story with title and nothing else!`
 
         const raw = JSON.stringify({
-          userPrompt: prompt,
+          'model': 'gpt-3.5-turbo',
+          "temperature": 0.7,
+          "max_tokens": 1500,
+          'messages': [
+            {
+              'role': 'user',
+              'content': prompt
+            }
+          ]
         });
 
         const requestOptions = {
@@ -333,15 +342,15 @@ function Generate({ localKey, setCoins, coins }) {
           body: raw,
         };
 
-        const response = await fetch("/api/openai", requestOptions);
+        const response = await fetch('https://api.openai.com/v1/chat/completions', requestOptions);
         const result = await response.json();
 
-        if (result.success) {
+        if (result) {
           setUserPrompt("")
           const newCoins = coins - 1
           setCoins(newCoins)
           localStorage.coins = newCoins
-          const textArray = result.text.split("\n\n")
+          const textArray = result.choices[0].message.content.split("\n\n")
           const title = textArray[0]
 
           let storyParas = textArray
@@ -356,7 +365,6 @@ function Generate({ localKey, setCoins, coins }) {
       } catch (error) {
         toast.error(error.message)
         setLoading(false)
-        return error;
       }
     } else {
       toast.error("You have 0 coins left! Please buy more coins to create new stories.")
