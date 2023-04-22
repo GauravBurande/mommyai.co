@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import Head from "next/head"
+import Image from "next/image"
 import Link from 'next/link'
 import { RiLightbulbFlashFill } from "react-icons/ri"
 import { BsSend, BsSoundwave } from "react-icons/bs"
@@ -76,6 +77,11 @@ const Home = () => {
 
         <meta name="description" content="Create stories on various topics that your children are sure to enjoy." />
         <meta name="keywords" content="mommyai.co, mommyai, ai storyteller, stories for kids, create stories for kids, children, kids, generate stories for kids using ai, once upon a time, tales." />
+
+        <meta name="theme-color" content="#FDE047" />
+        <link rel="manifest" href="/manifest.json" />
+        <link rel="shortcut icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" href="/apple-icon.png"></link>
 
         {/* open graph social meta tag */}
         <meta property="og:title" content="mommyAI.co" />
@@ -240,7 +246,7 @@ function Hero() {
         </div>
 
         <div className='w-4/6 md:w-3/6'>
-          <img className='rounded-3xl pb-8 md:pb-0' src="images/mommy.png" alt="mommy" />
+          <Image width={500} height={500} className='rounded-3xl pb-8 md:pb-0' src="/images/mommy.png" alt="mommy" />
         </div>
       </motion.div>
     </div>
@@ -277,7 +283,7 @@ function Story() {
         viewport={{ amount: "some" }}
         className='flex text-white py-16 px-10 md:px-16 flex-col items-center justify-center space-x-10 lg:flex-row'>
         <div className="w-5/6 pb-8 md:pb-0">
-          <img src="images/princess.png" alt="princess" />
+          <Image width={500} height={500} src="/images/princess.png" alt="princess" />
         </div>
 
         <div>
